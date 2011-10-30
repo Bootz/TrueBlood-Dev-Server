@@ -60,5 +60,3 @@ enum Creatures
 };
 
 #endif
-
-
