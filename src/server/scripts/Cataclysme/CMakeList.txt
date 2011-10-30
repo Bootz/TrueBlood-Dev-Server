@@ -9,6 +9,7 @@ set(scripts_STAT_SRCS
   Cataclysme/Donjons/TheStonecore/the_stonecore.h
   Cataclysme/Donjons/GrimBatol/grim_batol.h
   Cataclysme/Donjons/GrimBatol/instance_grim_batol.cpp
+  Cataclysme/Donjons/GrimBatol/boss_umbriss.cpp
   Cataclysme/Donjons/ThroneOfTheTides/throne_of_the_tides.h
   Cataclysme/Donjons/ThroneOfTheTides/instance_throne_of_the_tides.cpp
   Cataclysme/Donjons/LostCityOfTheTolvir/instance_lost_city_of_the_tolvir.cpp
@@ -21,6 +22,7 @@ set(scripts_STAT_SRCS
   Cataclysme/Donjons/HallsOfOrigination/boss_temple_guardian_anhuur.cpp
   Cataclysme/Donjons/HallsOfOrigination/boss_earthrager_ptah.cpp
   Cataclysme/Donjons/HallsOfOrigination/boss_anraphet.cpp
+  Cataclysme/Donjons/HallsOfOrigination/boss_isiset.cpp
   Cataclysme/Donjons/TheVortexPinnacle/the_vortex_pinnacle.h
   Cataclysme/Donjons/TheVortexPinnacle/instance_the_vortex_pinnacle.cpp
 )

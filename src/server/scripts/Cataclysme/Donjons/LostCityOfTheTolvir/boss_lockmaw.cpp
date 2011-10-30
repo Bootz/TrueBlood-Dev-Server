@@ -1,58 +1,46 @@
 /*
- * Copyright (C) 2010-2011 Project SkyFire <http://www.projectskyfire.org/>
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the
- * Free Software Foundation; either version 2 of the License, or (at your
- * option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program. If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright (C) 2011 True Blood <http://www.trueblood-servers.com/>
+* By Asardial
+*/
 
-#include"ScriptPCH.h"
-#include"WorldPacket.h"
-#include"lost_city_of_the_tolvir.h"
-#include"ScriptMgr.h"
-#include"ScriptedCreature.h"
-#include"SpellScript.h"
-#include"SpellAuraEffects.h"
+#include "ScriptPCH.h"
+#include "the_lost_city_of_tol_vir.h"
+#include "WorldPacket.h"
+#include "ScriptMgr.h"
+#include "ScriptedCreature.h"
+#include "SpellScript.h"
+#include "SpellAuraEffects.h"
 
 enum Spells
 {
-    SPELL_DUST_FLAIL		 = 81642,
-    SPELL_SCENT_OF_BLOOD	 = 81690,
-    H_SPELL_SCENT_OF_BLOOD	 = 89998,
-    SPELL_VENOMOUS_RAGE		 = 81706,
-    SPELL_VISCOUS_POISON	 = 81630,
-    H_SPELL_VISCOUS_POISON	 = 90004,
+    // Lockmaw
+    SPELL_DUST_FLAIL            = 81642,
+    SPELL_SCENT_OF_BLOOD        = 81690,
+    SPELL_VENOMOUS_RAGE         = 81706,
+    SPELL_VISCOUS_POISON        = 81630,
+    // Augh
+    SPELL_PARALYTIC_BLOW_DART   = 84799,
 };
 
-enum Events
+enum Creatures
 {
-    EVENT_DUST_FLAIL         = 1,
-    EVENT_SCENT_OF_BLOOD     = 2,
-    EVENT_VENOMOUS_RAGE      = 3,
-    EVENT_VISCOUS_POISON     = 4,
+    // Lockmaw encounter
+    CREATURE_LOCKMAW                  = 43614,
+    CREATURE_FRENZIED_CROCOLISK       = 43658,
+    CREATURE_AUGH                     = 49045,
+    CREATURE_AUGH_SCENT               = 45379,
+    CREATURE_AUGH_WHIRLWIND           = 45378,
 };
 
-enum SummonIds
-{
-    NPC_FRENZIED_CROCOLISK   = 43658,
-};
-
-const Position SummonLocations[4] =
+const Position SummonLocations[6] =
 {
     //Frenzied Crocolisks
     {-11033.29f, -1674.57f, -0.56f, 1.09f},
     {-11029.84f, -1673.09f, -0.37f, 2.33f},
     {-11007.25f, -1666.37f, -0.23f, 2.46f},
     {-11006.83f, -1666.85f, -0.25f, 2.23f},
+    {-11031.00f, -1653.59f,  0.86f, 2.42f},
+    {-11069.23f, -1667.72f,  0.75f, 0.72f},
 };
 
 class boss_lockmaw : public CreatureScript
@@ -66,92 +54,255 @@ class boss_lockmaw : public CreatureScript
         }
         struct boss_lockmawAI : public ScriptedAI
         {
-            boss_lockmawAI(Creature* pCreature) : ScriptedAI(pCreature), Summons(me)
+            boss_lockmawAI(Creature* pCreature) : ScriptedAI(pCreature)
             {
                 pInstance = pCreature->GetInstanceScript();
             }
 
             InstanceScript* pInstance;
-            EventMap events;
-            SummonList Summons;
-            bool check_in;
+	
+            uint32 DustTailTimer;
+            uint32 ScentOfBloodTimer;
+            uint32 ViscousPoisonTimer;
+            uint32 WhirlwindTimer;
+
+            bool Rage;
+            std::list<uint64> SummonList;
 
             void Reset ()
             {
-                events.Reset();
-                Summons.DespawnAll();
+                DustTailTimer = 15000;
+                ScentOfBloodTimer = 13000;
+                ViscousPoisonTimer = 7000;
+                WhirlwindTimer = 35000;
 
-                if (pInstance && (pInstance->GetData(DATA_LOCKMAW_EVENT) != DONE && !check_in))
-                    pInstance->SetData(DATA_LOCKMAW_EVENT, NOT_STARTED);
+                Rage = false;
+                RemoveSummons();
+            }
 
-                check_in = false;
+            void RemoveSummons()
+            {
+                if (SummonList.empty())
+                    return;
+
+                for (std::list<uint64>::const_iterator itr = SummonList.begin(); itr != SummonList.end(); ++itr)
+                {
+                    if (Creature* pTemp = Unit::GetCreature(*me, *itr))
+                        if (pTemp)
+                            pTemp->DisappearAndDie();
+                }
+                SummonList.clear();
+            }
+
+            void JustSummoned(Creature* pSummon)
+            {
+                switch (pSummon->GetEntry())
+                {
+                    case CREATURE_AUGH_SCENT:
+                    case CREATURE_AUGH_WHIRLWIND:
+                        if (Unit* pTarget = SelectTarget(SELECT_TARGET_RANDOM,0))
+                            pSummon->AI()->AttackStart(pTarget);
+                        SummonList.push_back(pSummon->GetGUID());
+                        break;
+                }
             }
 
             void JustDied(Unit* /*Kill*/)
             {
-                Summons.DespawnAll();
-                if (pInstance)
-                    pInstance->SetData(DATA_LOCKMAW_EVENT, DONE);
+                if (IsHeroic())
+                   me->SummonCreature(CREATURE_AUGH, SummonLocations[5], TEMPSUMMON_MANUAL_DESPAWN);
             }
 
             void EnterCombat(Unit* /*Ent*/)
             {
-                if (pInstance)
-                    pInstance->SetData(DATA_LOCKMAW_EVENT, IN_PROGRESS);
-
                 DoZoneInCombat();
             }
 
-            void UpdateAI(const uint32 uiDiff)
+            void UpdateAI(const uint32 diff)
             {
-                if (!UpdateVictim())  /* No target to kill */
+                if (!UpdateVictim())
                     return;
 
-                events.Update(uiDiff);
-
-                if (me->HasUnitState(UNIT_STAT_CASTING))
-                    return;
-
-                while(uint32 eventId = events.ExecuteEvent())
+                if (DustTailTimer <= diff)
                 {
-                    switch(eventId)
-                    {
-                        case EVENT_DUST_FLAIL:
-                            DoCast(me->getVictim(), SPELL_DUST_FLAIL);
-                            events.ScheduleEvent(EVENT_DUST_FLAIL, urand(6000, 10000));
-                            return;
-                        case EVENT_VISCOUS_POISON:
-                            if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, true))
-                                DoCast(me->getVictim(), SPELL_VISCOUS_POISON);
-                                events.ScheduleEvent(EVENT_VISCOUS_POISON, 2000);
-                            return;
-                        case EVENT_SCENT_OF_BLOOD:
-                            if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, true))
-                                DoCast(me->getVictim(), SPELL_SCENT_OF_BLOOD);
-                                for(uint8 i=0; i<4; i++)
-                                {
-                                  Creature* Crocolisk = me->SummonCreature(NPC_FRENZIED_CROCOLISK, SummonLocations[i], TEMPSUMMON_CORPSE_DESPAWN);
-                                  Crocolisk->AddThreat(me->getVictim(), 0.0f);
-                                  DoZoneInCombat(Crocolisk);
-                                }
-                                events.ScheduleEvent(EVENT_SCENT_OF_BLOOD, 6000);
-                            return;
-                        case EVENT_VENOMOUS_RAGE:
-                            if (me->GetHealthPct() < 30)
-                                DoCast(me, SPELL_VENOMOUS_RAGE);
-                                events.ScheduleEvent(EVENT_VENOMOUS_RAGE, 1000);
-                            return;
-                        default:
-                            break;
-                    }
+                    DoCast(me->getVictim(), SPELL_DUST_FLAIL);
+                    DustTailTimer = 25000;
+                } else DustTailTimer -= diff;
+
+                if (ScentOfBloodTimer <= diff)
+                {
+					// Base [4] now for test [1]
+                    me->SummonCreature(CREATURE_AUGH_SCENT, SummonLocations[1], TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 15000);
+                    ScentOfBloodTimer = 45000;
+                } else ScentOfBloodTimer -= diff;
+
+                if (WhirlwindTimer <= diff)
+                {
+					// Base [4] now for test [1]
+                    me->SummonCreature(CREATURE_AUGH_WHIRLWIND, SummonLocations[1], TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 20000);
+                    WhirlwindTimer = 45000;
+                } else WhirlwindTimer -= diff;
+
+                if (ViscousPoisonTimer <= diff)
+                {
+                    if (Unit* pTarget = SelectTarget(SELECT_TARGET_RANDOM, 0, 100, true))
+                        DoCast(pTarget, SPELL_VISCOUS_POISON);
+                    ViscousPoisonTimer = 12000;
+                } else ViscousPoisonTimer -= diff;
+
+                if (HealthBelowPct(31) && Rage == false)
+                {
+                    DoCast(me, SPELL_VENOMOUS_RAGE);
+                    Rage = true;
+                }
+
+                DoMeleeAttackIfReady();
+            }
+        };
+};
+	
+class npc_augh_scent : public CreatureScript
+{
+    public:
+        npc_augh_scent() : CreatureScript("npc_augh_scent") { }
+
+        struct npc_augh_scentAI : public ScriptedAI
+        {
+            npc_augh_scentAI(Creature *pCreature) : ScriptedAI(pCreature)
+            {
             }
 
-            DoMeleeAttackIfReady();
+            uint32 ParalyticBlowDartTimer;
+
+            bool Scent;
+
+            void Reset()
+            {
+                ParalyticBlowDartTimer = 3000;
+                Scent = false;
+				me->DespawnOrUnsummon(60000);
+            }
+
+            void UpdateAI(const uint32 diff)
+            {
+                if (Scent == false)
+                {
+                    if (Unit* pTarget = SelectTarget(SELECT_TARGET_RANDOM, 0, 100, true))
+                    {
+                        Talk(0);
+                        DoCast(pTarget, SPELL_SCENT_OF_BLOOD);
+                        for(uint8 i=0; i<4; i++)
+                        {
+                            Creature* Crocolisk = me->SummonCreature(CREATURE_FRENZIED_CROCOLISK, SummonLocations[i], TEMPSUMMON_CORPSE_DESPAWN);
+                            Crocolisk->AddThreat(pTarget, 0.0f);
+                            DoZoneInCombat(Crocolisk);
+                        }
+                    }
+                    Scent = true;
+				}
+
+                if (ParalyticBlowDartTimer <= diff)
+                {
+                    if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 100, true))
+                        DoCast(target, SPELL_PARALYTIC_BLOW_DART, true);
+                    ParalyticBlowDartTimer = 15000;
+                } else ParalyticBlowDartTimer -= diff;
+            }
+        };
+
+        CreatureAI* GetAI(Creature* pCreature) const
+        {
+            return new npc_augh_scentAI(pCreature);
         }
+};
+
+class npc_augh_whirlwind : public CreatureScript
+{
+    public:
+        npc_augh_whirlwind() : CreatureScript("npc_augh_whirlwind") { }
+
+        struct npc_augh_whirlwindAI : public ScriptedAI
+        {
+            npc_augh_whirlwindAI(Creature *pCreature) : ScriptedAI(pCreature)
+            {
+            }
+
+            bool Targeted;
+
+            void Reset()
+            {
+                Targeted = false;
+				me->DespawnOrUnsummon(60000);
+            }
+
+            void UpdateAI(const uint32 diff)
+            {
+                if (Targeted == false)
+                {
+                    if (Unit* pTarget = SelectTarget(SELECT_TARGET_RANDOM, 0, 100, true))
+                    {
+                        DoCast(me, 84784);
+                        Talk(0);
+                        me->GetMotionMaster()->MoveChase(pTarget);
+                    }
+                    Targeted = true;
+                }
+            }
+        };
+
+        CreatureAI* GetAI(Creature* pCreature) const
+        {
+            return new npc_augh_whirlwindAI(pCreature);
+        }
+};
+
+#define spell_vicious 81677
+#define spell_vicious_H 89999
+
+class mob_crosilik: public CreatureScript
+{
+public: 
+ mob_crosilik() : CreatureScript("mob_crosilik") { } 
+
+ struct mob_crosilikAI : public ScriptedAI
+    {
+        mob_crosilikAI(Creature *c) : ScriptedAI(c) {}
+
+		uint32 vicious;
+		
+        void Reset()
+        {
+			vicious = 10000;
+			me->DespawnOrUnsummon(60000);		   
+        }
+
+		void UpdateAI(const uint32 diff)
+        {
+            if (!UpdateVictim())
+            return;
+
+			if (vicious<= diff)
+			{
+				if (Unit *pTarget = SelectUnit(SELECT_TARGET_RANDOM, 0))
+				DoCast(pTarget, IsHeroic() ? spell_vicious_H : spell_vicious);
+				vicious   = 10000; 
+			} else vicious -= diff; 
+			
+			DoMeleeAttackIfReady();
+        }
+		
     };
+
+    CreatureAI* GetAI(Creature* pCreature) const
+    {
+        return new mob_crosilikAI (pCreature);
+    }
+
 };
 
 void AddSC_boss_lockmaw()
 {
     new boss_lockmaw();
+    new npc_augh_scent();
+    new mob_crosilik();
 }
