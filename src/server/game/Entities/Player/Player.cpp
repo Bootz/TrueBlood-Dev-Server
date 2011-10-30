@@ -5639,7 +5639,7 @@ float Player::GetDodgeFromAgility()
          0.034575f, // Mage
          0.02011f,  // Warlock
          0.0f,      // ??
-        -0.0187f    // Druid
+         0.04951f   // Druid
     };
     // Crit/agility to dodge/agility coefficient multipliers
     float crit_to_dodge[MAX_CLASSES] = {
@@ -5653,7 +5653,7 @@ float Player::GetDodgeFromAgility()
          1.0f,      // Mage
          1.0f,      // Warlock
          0.0f,      // ??
-         1.7f       // Druid
+         2.7f       // Druid
     };
 
     uint8 level = getLevel();
@@ -6930,6 +6930,21 @@ void Player::RewardReputation(Unit *pVictim, float rate)
         uint32 current_reputation_rank2 = GetReputationMgr().GetRank(factionEntry2);
         if (factionEntry2 && current_reputation_rank2 <= Rep->reputation_max_cap2)
             GetReputationMgr().ModifyReputation(factionEntry2, donerep2);
+    }
+
+    if (Rep->currencyid1 && Rep->currencycount1)
+    {
+        ModifyCurrency(Rep->currencyid1, Rep->currencycount1);
+    }
+
+    if (Rep->currencyid2 && Rep->currencycount2)
+    {
+        ModifyCurrency(Rep->currencyid2, Rep->currencycount2);
+    }
+
+    if (Rep->currencyid3 && Rep->currencycount3)
+    {
+        ModifyCurrency(Rep->currencyid3, Rep->currencycount3);
     }
 }
 
@@ -12356,7 +12371,9 @@ void Player::RemoveItem(uint8 bag, uint8 slot, bool update)
                         default:
                             break;
                     }
+
                 }
+
             }
 
             m_items[slot] = NULL;
@@ -12466,6 +12483,7 @@ void Player::DestroyItem(uint8 bag, uint8 slot, bool update)
                     RemoveItemsSetItem(this, pProto);
 
                 _ApplyItemMods(pItem, slot, false);
+
             }
 
             if (slot < EQUIPMENT_SLOT_END)
@@ -13969,7 +13987,6 @@ void Player::ApplyItemReforge(Item *item, bool apply)
     uint32 reforge_id = item->GetEnchantmentId(REFORGE_ENCHANTMENT_SLOT);
     if (!reforge_id)
         return;
-
     ItemReforgeEntry const *reforge = sItemReforgeStore.LookupEntry(reforge_id);
     if (!reforge)
         return;
@@ -14012,12 +14029,12 @@ void Player::ApplyItemReforge(Item *item, bool apply)
     for (int32 i = 0; i < 2; i++)
     {
         switch (statType[i])
-        {
+       {
         case ITEM_MOD_SPIRIT:
             sLog->outDebug(LOG_FILTER_PLAYER_ITEMS, "+ %u SPIRIT", statValue[i]);
             HandleStatModifier(UNIT_MOD_STAT_SPIRIT, TOTAL_VALUE, float(statValue[i]), (i == 0) ? (!apply) : apply);
             ApplyStatBuffMod(STAT_SPIRIT, (float)statValue[i], (i == 0) ? (!apply) : apply);
-        case  ITEM_MOD_DODGE_RATING:
+         case  ITEM_MOD_DODGE_RATING:
             ApplyRatingMod(CR_DODGE, statValue[i], (i == 0) ? (!apply) : apply);
             sLog->outDebug(LOG_FILTER_PLAYER_ITEMS, "+ %u DODGE", statValue[i]);
             break;
@@ -14054,6 +14071,7 @@ void Player::ApplyItemReforge(Item *item, bool apply)
             break;
         }
     }
+
 }
 
 void Player::UpdateSkillEnchantments(uint16 skill_id, uint16 curr_value, uint16 new_value)
@@ -23823,7 +23841,7 @@ void Player::_LoadSkills(PreparedQueryResult result)
             switch(GetSkillRangeType(pSkill, false))
             {
                 case SKILL_RANGE_LANGUAGE:                      // 300..300
-                    value = max = 300;
+                    value = max = 1;
                     break;
                 case SKILL_RANGE_MONO:                          // 1..1, grey monolite bar
                     value = max = 1;

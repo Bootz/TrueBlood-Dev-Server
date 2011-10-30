@@ -358,7 +358,7 @@ struct Areas
 enum RuneCooldowns
 
 {
-    RUNE_BASE_COOLDOWN  = 10000,
+    RUNE_BASE_COOLDOWN  = 6000,
     RUNE_MISS_COOLDOWN  = 1500,     // cooldown applied on runes when the spell misses
 };
 

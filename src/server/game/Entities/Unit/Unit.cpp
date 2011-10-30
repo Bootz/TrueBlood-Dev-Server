@@ -6717,7 +6717,6 @@ bool Unit::HandleDummyAuraProc(Unit *pVictim, uint32 damage, AuraEffect* trigger
                         break;
                     }
                 }
-
                 // Judgement of Light
                 case 20185:
                 {
@@ -10664,10 +10663,10 @@ uint32 Unit::SpellDamageBonus(Unit *pVictim, SpellEntry const *spellProto, uint3
             }
         break;
     }
-    if (damagetype == SPELL_DIRECT_DAMAGE && spellProto->powerType == POWER_RAGE
-        && HasAuraType(SPELL_AURA_MASTERY) && GetTypeId() == TYPEID_PLAYER &&
-        ToPlayer()->GetTalentBranchSpec(ToPlayer()->GetActiveSpec()) == BS_WARRIOR_FURY)
-            DoneTotalMod *= float(1.0f + (0.45f + (ToPlayer()->GetMasteryPoints() * 0.056f)));
+    //if (damagetype == SPELL_DIRECT_DAMAGE && spellProto->powerType == POWER_RAGE
+        //&& HasAuraType(SPELL_AURA_MASTERY) && GetTypeId() == TYPEID_PLAYER &&
+        //ToPlayer()->GetTalentBranchSpec(ToPlayer()->GetActiveSpec()) == BS_WARRIOR_FURY)
+            //DoneTotalMod *= float(1.0f + (0.45f + (ToPlayer()->GetMasteryPoints() * 0.056f)));
 
     // ..taken
     int32 maxPositiveMod = 0; // max of the positive amount aura (that increase the damage taken)
@@ -17023,7 +17022,7 @@ void Unit::EnterVehicle(Vehicle *vehicle, int8 seatId, bool byAura)
         plr->StopCastingBindSight();
         Unmount();
         RemoveAurasByType(SPELL_AURA_MOUNTED);
-
+    
         // drop flag at invisible in bg
         if (Battleground *bg = plr->GetBattleground())
             bg->EventPlayerDroppedFlag(plr);

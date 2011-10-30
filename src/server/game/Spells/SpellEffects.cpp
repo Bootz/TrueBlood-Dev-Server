@@ -364,6 +364,38 @@ void Spell::SpellDamageSchoolDmg(SpellEffIndex effIndex)
                         if (unitTarget)
                         m_caster->CastSpell(m_caster, 86698, false, NULL);
                     return;
+                  case 91519: //Mesure de sécurité pour l'incinération
+			{
+			uint32 countms2 = 0;
+			for (std::list<TargetInfo>::iterator ihit = m_UniqueTargetInfo.begin(); ihit != m_UniqueTargetInfo.end(); ++ihit)
+                        {
+                             if (ihit->targetGUID != m_caster->GetGUID())
+                             if (Player *target = ObjectAccessor::GetPlayer(*m_caster, ihit->targetGUID))
+                             countms2++;
+                        }
+                        if(countms2)
+                        {
+                             if(countms2 > 0 && countms2 < 5) damage = 47000 / countms2;
+                             if(countms2 > 4) damage = 47000 / 5;
+                        }
+			}
+			break;
+                  case 92036: //Acquisition d'une cible
+			{
+			uint32 countms2 = 0;
+			for (std::list<TargetInfo>::iterator ihit = m_UniqueTargetInfo.begin(); ihit != m_UniqueTargetInfo.end(); ++ihit)
+                        {
+                             if (ihit->targetGUID != m_caster->GetGUID())
+                             if (Player *target = ObjectAccessor::GetPlayer(*m_caster, ihit->targetGUID))
+                             countms2++;
+                        }
+                        if(countms2)
+                        {
+                             if(countms2 > 0 && countms2 < 2) damage = 82645 / countms2;
+                             if(countms2 > 1) damage = 82645 / 2;
+                        }
+			}
+			break;
                     // Positive/Negative Charge
                     case 28062:
                     case 28085:
@@ -1754,7 +1786,7 @@ void Spell::EffectDummy(SpellEffIndex effIndex)
                                 Continue = true;
                         }
                         if (Continue == true)
-                            m_caster->CastSpell(unitTarget, 79102, true); // Blessing of Might (Raid)
+                            m_caster->CastSpell(unitTarget, 79101, true); // Blessing of Might (Raid)
                         else
                             m_caster->CastSpell(unitTarget, 79101, true); // Blessing of Might (Caster)
                     }
@@ -1775,7 +1807,7 @@ void Spell::EffectDummy(SpellEffIndex effIndex)
                                 Continue = true;
                         }
                         if (Continue == true)
-                            m_caster->CastSpell(unitTarget, 79063, true); // Blessing of Kings (Raid)
+                            m_caster->CastSpell(unitTarget, 79062, true); // Blessing of Kings (Raid)
                         else
                             m_caster->CastSpell(unitTarget, 79062, true); // Blessing of Kings (Caster)
                     }

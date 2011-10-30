@@ -1,26 +1,7 @@
 /*
- * Copyright (C) 2005-2011 MaNGOS <http://www.getmangos.com/>
- *
- * Copyright (C) 2008-2011 Trinity <http://www.trinitycore.org/>
- *
- * Copyright (C) 2006-2011 ScriptDev2 <http://www.scriptdev2.com/>
- *
- * Copyright (C) 2010-2011 Project SkyFire <http://www.projectskyfire.org/>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- */
+* Copyright (C) 2011 True Blood <http://www.trueblood-servers.com/>
+* By Asardial
+*/
 
 #include "ScriptPCH.h"
 #include "vault_of_archavon.h"
@@ -28,35 +9,35 @@
 enum Spells
 {
     // Toravon
-    SPELL_FREEZING_GROUND   = 72090,    // don't know cd... using 20 secs.
-    SPELL_FROZEN_ORB        = 72091,
-    SPELL_WHITEOUT          = 72034,    // Every 38 sec. cast. (after SPELL_FROZEN_ORB)
-    SPELL_FROZEN_MALLET     = 71993,
+    SPELL_FREEZING_GROUND = 72090, // don't know cd... using 20 secs.
+    SPELL_FROZEN_ORB = 72091,
+    SPELL_WHITEOUT = 72034, // Every 38 sec. cast. (after SPELL_FROZEN_ORB)
+    SPELL_FROZEN_MALLET = 71993,
 
     // Frost Warder
-    SPELL_FROST_BLAST       = 72123,    // don't know cd... using 20 secs.
-    SPELL_FROZEN_MALLET_2   = 72122,
+    SPELL_FROST_BLAST = 72123, // don't know cd... using 20 secs.
+    SPELL_FROZEN_MALLET_2 = 72122,
 
     // Frozen Orb
-    SPELL_FROZEN_ORB_DMG    = 72081,    // priodic dmg aura
-    SPELL_FROZEN_ORB_AURA   = 72067,    // make visible
+    SPELL_FROZEN_ORB_DMG = 72081, // priodic dmg aura
+    SPELL_FROZEN_ORB_AURA = 72067, // make visible
 
     // Frozen Orb Stalker
-    SPELL_FROZEN_ORB_SUMMON = 72093,    // summon orb
+    SPELL_FROZEN_ORB_SUMMON = 72093, // summon orb
 };
 
 // Events boss
 enum Events
 {
-    EVENT_FREEZING_GROUND   = 1,
-    EVENT_FROZEN_ORB        = 2,
-    EVENT_WHITEOUT          = 3,
+    EVENT_FREEZING_GROUND = 1,
+    EVENT_FROZEN_ORB = 2,
+    EVENT_WHITEOUT = 3,
 
-    EVENT_FROST_BLAST       = 4,
+    EVENT_FROST_BLAST = 4,
 };
 
 // Mob Frozen Orb
-#define MOB_FROZEN_ORB 38456    // 1 in 10 mode and 3 in 25 mode
+#define MOB_FROZEN_ORB 38456 // 1 in 10 mode and 3 in 25 mode
 
 class boss_toravon : public CreatureScript
 {
@@ -67,8 +48,6 @@ class boss_toravon : public CreatureScript
         {
             boss_toravonAI(Creature* creature) : BossAI(creature, DATA_TORAVON)
             {
-                me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
-                me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
             }
 
             void EnterCombat(Unit* /*who*/)
@@ -125,7 +104,7 @@ class boss_toravon : public CreatureScript
 };
 
 /*######
-##  Mob Frost Warder
+## Mob Frost Warder
 ######*/
 class mob_frost_warder : public CreatureScript
 {
@@ -180,7 +159,7 @@ class mob_frost_warder : public CreatureScript
 };
 
 /*######
-##  Mob Frozen Orb
+## Mob Frozen Orb
 ######*/
 class mob_frozen_orb : public CreatureScript
 {
@@ -235,7 +214,7 @@ public:
 };
 
 /*######
-##  Mob Frozen Orb Stalker
+## Mob Frozen Orb Stalker
 ######*/
 class mob_frozen_orb_stalker : public CreatureScript
 {

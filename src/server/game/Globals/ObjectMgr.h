@@ -446,6 +446,12 @@ struct ReputationOnKillEntry
     uint32 reputation_max_cap2;
     int32 repvalue2;
     bool team_dependent;
+    uint32 currencyid1;
+    uint32 currencyid2;
+    uint32 currencyid3;
+    int32 currencycount1;
+    int32 currencycount2;
+    int32 currencycount3;
 };
 
 struct RepSpilloverTemplate

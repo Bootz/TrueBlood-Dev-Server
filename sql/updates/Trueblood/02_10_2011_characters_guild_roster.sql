@@ -1,0 +1,6 @@
+-- Guild Roster System
+ALTER TABLE `guild_member`
+ADD COLUMN `BankResetTimeTab6` INT(10) UNSIGNED DEFAULT '0' NOT NULL AFTER `BankRemSlotsTab5`,
+ADD COLUMN `BankRemSlotsTab6` INT(10) UNSIGNED DEFAULT '0' NOT NULL AFTER `BankResetTimeTab6`,
+ADD COLUMN `BankResetTimeTab7` INT(10) UNSIGNED DEFAULT '0' NOT NULL AFTER `BankRemSlotsTab6`,
+ADD COLUMN `BankRemSlotsTab7` INT(10) UNSIGNED DEFAULT '0' NOT NULL AFTER `BankResetTimeTab7`;

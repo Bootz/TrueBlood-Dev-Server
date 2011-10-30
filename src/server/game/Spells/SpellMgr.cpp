@@ -3732,28 +3732,36 @@ void SpellMgr::LoadSpellCustomAttr()
             spellInfo->EffectBasePoints[0] = 16;
             count++;
             break;
-        case 77493: // Mastery: Razor Claws
-            spellInfo->EffectBasePoints[0] = 25.04;
-            count++;
-            break;
         case 76658: // Mastery: Essence of the Viper
             spellInfo->EffectBasePoints[0] = 8;
             count++;
             break;
         case 76657: // Mastery: Master of Beasts
-            spellInfo->EffectBasePoints[0] = 13.6;
+            spellInfo->EffectBasePoints[0] = 13;
             count++;
             break;
         case 76595: // Mastery: Flashburn
-            spellInfo->EffectBasePoints[0] = 22.4;
+            spellInfo->EffectBasePoints[0] = 22;
             count++;
             break;
-        case 76671: // Mastery: Divine Bulwark
-            spellInfo->EffectBasePoints[0] = 18;
+        case 76547: // Mastery: Mana Adept
+            spellInfo->EffectBasePoints[0] = 12;
+            count++;
+            break;
+        case 76613: // Mastery: Frostburn
+            spellInfo->EffectBasePoints[0] = 20;
+            count++;
+            break;
+        case 77215: // Mastery: Potent Afflictions
+            spellInfo->EffectBasePoints[0] = 13;
+            count++;
+            break;
+        case 77219: // Mastery: Master Demonologist
+            spellInfo->EffectBasePoints[0] = 16;
             count++;
             break;
         case 77220: // Mastery: Fiery Apocalypse
-            spellInfo->EffectBasePoints[0] = 10.8;
+            spellInfo->EffectBasePoints[0] = 10;
             count++;
             break;
         case 76857: // Mastery: Critical Block
@@ -3761,8 +3769,60 @@ void SpellMgr::LoadSpellCustomAttr()
             spellInfo->EffectBasePoints[1] = 12;
             count++;
             break;
+        case 76671: // Mastery: Divine Bulwark
+            spellInfo->EffectBasePoints[0] = 18;
+            count++;
+            break;
+        case 76672: // Mastery: Hand of Light
+            spellInfo->EffectBasePoints[0] = 17;
+            count++;
+            break;
+        case 77226: // Mastery: Deep Healing
+            spellInfo->EffectBasePoints[0] = 24;
+            count++;
+            break;
+        case 77222: // Mastery: Elemental Overload
+            spellInfo->EffectBasePoints[0] = 16;
+            count++;
+            break;
+        case 77223: // Mastery: Enhanced Elements
+            spellInfo->EffectBasePoints[0] = 20;
+            count++;
+            break;
+        case 77494: // Mastery: Savage Defender
+            spellInfo->EffectBasePoints[0] = 32;
+            count++;
+            break;
+        case 77493: // Mastery: Razor Claws
+            spellInfo->EffectBasePoints[0] = 25;
+            count++;
+            break;
+        case 77492: // Mastery: Total Eclipse
+            spellInfo->EffectBasePoints[0] = 16;
+            count++;
+            break;
+        case 77495: // Mastery: Harmony
+            spellInfo->EffectBasePoints[0] = 10;
+            count++;
+            break;
+        case 77484: // Mastery: Shield Discipline
+            spellInfo->EffectBasePoints[0] = 20;
+            count++;
+            break;
         case 77489: // Mastery: Echo of Light
-            spellInfo->StackAmount = 100; // should be inf
+            spellInfo->StackAmount = 1; // should be inf
+            count++;
+            break;
+        case 79624: // Générateur de puissance
+            spellInfo->StackAmount = 1; // should be inf
+            count++;
+            break;
+        case 78068:                             // Crachat de magma
+            spellInfo->MaxAffectedTargets = 3; // En 10 joueurs
+            count++;
+            break;
+        case 91917:                             // Crachat de magma
+            spellInfo->MaxAffectedTargets = 8; // En 25 joueurs
             count++;
             break;
         case 51514: // Hex
@@ -3866,6 +3926,14 @@ void SpellMgr::LoadSpellCustomAttr()
             spellInfo->excludeCasterAuraSpell = 95809; // Insanity
             count++;
             break;
+        case 89998:                             // Odeur du sang
+            spellInfo->MaxAffectedTargets = 2;
+            count++;
+            break;
+        case 29964:                             // Souffle de Dragon
+            spellInfo->EffectRadiusIndex[0] = 10; // (100)
+            count++;
+            break;
         // Heart of the Crusader
         case 20335:
         case 20336:
@@ -3911,6 +3979,7 @@ void SpellMgr::LoadSpellCustomAttr()
         case 40810: case 43267: case 43268:     // Saber Lash
         case 42384:                             // Brutal Swipe
         case 45150: case 95172: case 88942:     // Meteor Slash
+        case 77679: case 92969: case 92968: case 92970:     // Scorching Blast
         case 64422: case 64688:                 // Sonic Screech
         case 72373:                             // Shared Suffering
         case 71904:                             // Chaos Bane
@@ -3932,6 +4001,10 @@ void SpellMgr::LoadSpellCustomAttr()
             count++;
             break;
         case 89000: case 95177:                 // Fel Firestorm
+            spellInfo->EffectRadiusIndex[0] = 15; // (3)
+            count++;
+            break;
+        case 78194:                             // Magma Jets
             spellInfo->EffectRadiusIndex[0] = 15; // (3)
             count++;
             break;

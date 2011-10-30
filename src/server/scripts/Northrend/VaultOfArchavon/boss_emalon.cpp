@@ -1,26 +1,7 @@
 /*
- * Copyright (C) 2005-2011 MaNGOS <http://www.getmangos.com/>
- *
- * Copyright (C) 2008-2011 Trinity <http://www.trinitycore.org/>
- *
- * Copyright (C) 2006-2011 ScriptDev2 <http://www.scriptdev2.com/>
- *
- * Copyright (C) 2010-2011 Project SkyFire <http://www.projectskyfire.org/>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- */
+* Copyright (C) 2011 True Blood <http://www.trueblood-servers.com/>
+* By Asardial
+*/
 
 #include "ScriptPCH.h"
 #include "vault_of_archavon.h"
@@ -28,38 +9,38 @@
 //Emalon spells
 enum Spells
 {
-    SPELL_OVERCHARGE            = 64218,    // Cast every 45 sec on a random Tempest Minion
-    SPELL_BERSERK               = 26662,
+    SPELL_OVERCHARGE = 64218, // Cast every 45 sec on a random Tempest Minion
+    SPELL_BERSERK = 26662,
 
-    SPELL_SHOCK                 = 64363,
-    SPELL_OVERCHARGED           = 64217,
-    SPELL_OVERCHARGED_BLAST     = 64219,    // Cast when Overcharged reaches 10 stacks. Mob dies after that
+    SPELL_SHOCK = 64363,
+    SPELL_OVERCHARGED = 64217,
+    SPELL_OVERCHARGED_BLAST = 64219, // Cast when Overcharged reaches 10 stacks. Mob dies after that
 };
 
 // cannot let SpellDifficulty handle it, no entries for these
-#define SPELL_CHAIN_LIGHTNING           RAID_MODE(64213, 64215)
-#define SPELL_LIGHTNING_NOVA            RAID_MODE(64216, 65279)
+#define SPELL_CHAIN_LIGHTNING RAID_MODE(64213, 64215)
+#define SPELL_LIGHTNING_NOVA RAID_MODE(64216, 65279)
 
 enum BossEmotes
 {
-    EMOTE_OVERCHARGE        = -1590000,
-    EMOTE_MINION_RESPAWN    = -1590001,
-    EMOTE_BERSERK           = -1590002,
+    EMOTE_OVERCHARGE = -1590000,
+    EMOTE_MINION_RESPAWN = -1590001,
+    EMOTE_BERSERK = -1590002,
 };
 
 enum Events
 {
-    EVENT_CHAIN_LIGHTNING   = 1,
-    EVENT_LIGHTNING_NOVA    = 2,
-    EVENT_OVERCHARGE        = 3,
-    EVENT_BERSERK           = 4,
-    EVENT_SHOCK             = 5,
+    EVENT_CHAIN_LIGHTNING = 1,
+    EVENT_LIGHTNING_NOVA = 2,
+    EVENT_OVERCHARGE = 3,
+    EVENT_BERSERK = 4,
+    EVENT_SHOCK = 5,
 };
 
 //Creatures
-#define MOB_TEMPEST_MINION          33998
+#define MOB_TEMPEST_MINION 33998
 
-#define MAX_TEMPEST_MINIONS         4
+#define MAX_TEMPEST_MINIONS 4
 
 struct Position TempestMinions[MAX_TEMPEST_MINIONS] =
 {
@@ -70,7 +51,7 @@ struct Position TempestMinions[MAX_TEMPEST_MINIONS] =
 };
 
 /*######
-##  Emalon the Storm Watcher
+## Emalon the Storm Watcher
 ######*/
 class boss_emalon : public CreatureScript
 {
@@ -81,8 +62,6 @@ class boss_emalon : public CreatureScript
         {
             boss_emalonAI(Creature* creature) : BossAI(creature, DATA_EMALON)
             {
-                me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
-                me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
             }
 
             void Reset()
@@ -180,7 +159,7 @@ class boss_emalon : public CreatureScript
 };
 
 /*######
-##  Tempest Minion
+## Tempest Minion
 ######*/
 class mob_tempest_minion : public CreatureScript
 {

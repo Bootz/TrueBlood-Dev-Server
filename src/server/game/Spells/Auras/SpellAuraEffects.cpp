@@ -1762,7 +1762,6 @@ void AuraEffect::PeriodicTick(AuraApplication * aurApp, Unit * caster) const
                     addition += abs(int32((addition * aurEff->GetAmount()) / 50));
 
                 damage += addition;
-                damage = caster->SpellHealingBonus(target, GetSpellProto(), GetEffIndex(), damage, DOT, GetBase()->GetStackAmount());
             }
             switch (m_spellProto->Id)
             {
@@ -4096,6 +4095,12 @@ void AuraEffect::HandleAuraMounted(AuraApplication const *aurApp, uint8 mode, bo
     if (apply)
     {
         uint32 creatureEntry = GetMiscValue();
+       if (aurApp->GetBase()->GetId() == 87840)
+       {
+            target->Mount(plr->getGender() == GENDER_FEMALE ? 29423 : 29422, 0, GetMiscValue());
+            target->Mount(plr->getGender() == GENDER_MALE ? 29422 : 29423, 0, GetMiscValue());
+            return;
+       }
 
         // Festive Holiday Mount
         if (target->HasAura(62061))
@@ -6104,14 +6109,14 @@ void AuraEffect::HandleAuraDummy(AuraApplication const *aurApp, uint8 mode, bool
                     }
                     break;
                 }
-				case 33763:
-					if (target->HasAura(92363, GetCasterGUID())) // Get talent Malfurion's gift rank 1
-						if (roll_chance_i(2)) // Procs only 2% of the time
-							target->CastSpell(caster, 16870, true, NULL, this); // Clearcasting
-					if (target->HasAura(92364, GetCasterGUID())) // Get talent Malfurion's gift rank 2
-						if (roll_chance_i(4)) // Procs only 4% of the time
-							target->CastSpell(caster, 16870, true, NULL, this); // Clearcasting
-				break;
+                case 33763:
+                    if (target->HasAura(92363, GetCasterGUID())) // Get talent Malfurion's gift rank 1
+                    if (roll_chance_i(2)) // Procs only 2% of the time
+                        target->CastSpell(caster, 16870, true, NULL, this); // Clearcasting
+                    if (target->HasAura(92364, GetCasterGUID())) // Get talent Malfurion's gift rank 2
+                    if (roll_chance_i(4)) // Procs only 4% of the time
+                        target->CastSpell(caster, 16870, true, NULL, this); // Clearcasting
+                    break;
                 case 39850:                                     // Rocket Blast
                     if (roll_chance_i(20))                       // backfire stun
                         target->CastSpell(target, 51581, true, NULL, this);
@@ -6531,6 +6536,18 @@ void AuraEffect::HandleAuraDummy(AuraApplication const *aurApp, uint8 mode, bool
                             target->PlayDirectSound(14972, target->ToPlayer());
                     }
                     break;
+                case 87840: //Rune wild
+                    if (target->GetTypeId() == TYPEID_PLAYER && target->HasAura(87840))
+                    {
+                        if (target->getLevel() >= 20 && target->getLevel() < 40)
+                               target->ToPlayer()->SetSpeed(MOVE_RUN, 1.6f, true);
+                        else if (target->getLevel() >= 40)
+                               target->ToPlayer()->SetSpeed(MOVE_RUN, 2.0f, true);
+                     }
+                     else target->ToPlayer()->SetSpeed(MOVE_RUN, 1.0f, true);
+                     target->ToPlayer()->setInWorgenForm(UNIT_FLAG2_WORGEN_TRANSFORM3);
+                     target->GetAuraEffectsByType(SPELL_AURA_MOUNTED).front()->GetMiscValue();
+                     break;
                 case 62061: // Festive Holiday Mount
                     if (target->HasAuraType(SPELL_AURA_MOUNTED))
                     {

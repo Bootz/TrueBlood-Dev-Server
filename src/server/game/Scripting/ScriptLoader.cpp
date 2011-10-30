@@ -21,6 +21,23 @@
 #include "ScriptPCH.h"
 #include "ScriptLoader.h"
 
+// Custom
+void AddSC_boss_baine_sabot_de_sang();  // Boss Faction
+void AddSC_boss_dame_sylvanas_coursevent();
+void AddSC_boss_falstad_marteau_hardi();
+void AddSC_boss_garrosh_hurlenfer();
+void AddSC_boss_grand_magistere_rommath();
+void AddSC_boss_prophete_velen();
+void AddSC_boss_tyrande_murmevent();
+void AddSC_boss_varian_wrynn();
+void AddSC_boss_general_umbriss();      // Boss GrimBatol
+void AddSC_boss_isiset();               // Boss Salle des Origines
+void AddSC_boss_ptah();
+void AddSC_boss_anraphet();
+void AddSC_boss_temple_guardian_anhuur();
+void AddSC_boss_high_prophet_barim();   // Boss TolVir
+void AddSC_boss_lockmaw();
+
 //examples
 void AddSC_example_creature();
 void AddSC_example_escort();
@@ -583,18 +600,12 @@ void AddSC_zangarmarsh();
 void AddSC_the_stonecore();                     //TheStonecore
 void AddSC_instance_the_stonecore();
 void AddSC_instance_halls_of_origination();     //Halls of Origination
-void AddSC_boss_temple_guardian_anhuur();
-void AddSC_boss_earthrager_ptah();
-void AddSC_boss_anraphet();
 void AddSC_instance_baradin_hold();             //Baradin Hold
 void AddSC_boss_argaloth();
 void AddSC_lost_city_of_the_tolvir();           //The Lost City of the Tol'vir
 void AddSC_instance_lost_city_of_the_tolvir();
-void AddSC_boss_lockmaw();
-void AddSC_boss_high_prophet_barim();
 void AddSC_instance_the_vortex_pinnacle();      //The Vortex Pinnacle
 void AddSC_instance_grim_batol();               //Grim Batol
-void AddSC_instance_throne_of_the_tides();      //Throne of the Tides
 void AddSC_instance_blackrock_caverns();        //Blackrock Caverns
 
 // battlegrounds
@@ -1219,18 +1230,12 @@ void AddNorthrendScripts()
     AddSC_the_stonecore();                     //The Stonecore
     AddSC_instance_the_stonecore();
     AddSC_instance_halls_of_origination();     //Halls of Origination
-    AddSC_boss_temple_guardian_anhuur();
-    AddSC_boss_earthrager_ptah();
-    AddSC_boss_anraphet();
     AddSC_instance_baradin_hold();             //Baradin Hold
     AddSC_boss_argaloth();
     AddSC_lost_city_of_the_tolvir();           //Lost City of the Tol'vir
     AddSC_instance_lost_city_of_the_tolvir();
-    AddSC_boss_lockmaw();
-    AddSC_boss_high_prophet_barim();
     AddSC_instance_the_vortex_pinnacle();      //The Vortex Pinnacle
     AddSC_instance_grim_batol();               //Grim Batol
-    AddSC_instance_throne_of_the_tides();      //Throne of the Tides
     AddSC_instance_blackrock_caverns();        //Blackrock Caverns
 
 #endif
@@ -1264,6 +1269,21 @@ void AddCustomScripts()
 {
 #ifdef SCRIPTS
     /* This is where custom scripts should be added. */
-
+// Custom
+    AddSC_boss_baine_sabot_de_sang();  // Boss Faction
+    AddSC_boss_dame_sylvanas_coursevent();
+    AddSC_boss_falstad_marteau_hardi();
+    AddSC_boss_garrosh_hurlenfer();
+    AddSC_boss_grand_magistere_rommath();
+    AddSC_boss_prophete_velen();
+    AddSC_boss_tyrande_murmevent();
+    AddSC_boss_varian_wrynn();
+    AddSC_boss_general_umbriss();      // Boss GrimBatol
+    AddSC_boss_isiset();               // Boss Salle des Origines
+    AddSC_boss_ptah();
+    AddSC_boss_anraphet();
+    AddSC_boss_temple_guardian_anhuur();
+    AddSC_boss_high_prophet_barim();   // Boss TolVir
+    AddSC_boss_lockmaw();
 #endif
 }

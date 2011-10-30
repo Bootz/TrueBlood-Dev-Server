@@ -148,18 +148,11 @@ public:
     class spell_warl_create_healthstone_SpellScript : public SpellScript
     {
         PrepareSpellScript(spell_warl_create_healthstone_SpellScript)
-        static uint32 const iTypes[8][3];
 
         void HandleScriptEffect(SpellEffIndex effIndex)
         {
             if (Unit* unitTarget = GetHitUnit())
-            {
-                uint32 rank = 0;
-
-                uint8 spellRank = sSpellMgr->GetSpellRank(GetSpellInfo()->Id);
-                if (spellRank > 0 && spellRank <= 8)
-                    CreateItem(effIndex, iTypes[spellRank - 1][rank]);
-            }
+                CreateItem(effIndex, 5512);
         }
 
         void Register()
@@ -172,17 +165,6 @@ public:
     {
         return new spell_warl_create_healthstone_SpellScript();
     }
-};
-
-uint32 const spell_warl_create_healthstone::spell_warl_create_healthstone_SpellScript::iTypes[8][3] = {
-    { 5512, 19004, 19005},              // Minor Healthstone
-    { 5511, 19006, 19007},              // Lesser Healthstone
-    { 5509, 19008, 19009},              // Healthstone
-    { 5510, 19010, 19011},              // Greater Healthstone
-    { 9421, 19012, 19013},              // Major Healthstone
-    {22103, 22104, 22105},              // Master Healthstone
-    {36889, 36890, 36891},              // Demonic Healthstone
-    {36892, 36893, 36894}               // Fel Healthstone
 };
 
 class spell_warl_drain_soul : public SpellScriptLoader

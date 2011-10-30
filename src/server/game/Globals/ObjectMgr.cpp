@@ -7200,6 +7200,8 @@ void ObjectMgr::LoadReputationOnKill()
     QueryResult result = WorldDatabase.Query("SELECT creature_id, RewOnKillRepFaction1, RewOnKillRepFaction2, "
     //   3             4             5                   6             7             8                   9
         "IsTeamAward1, MaxStanding1, RewOnKillRepValue1, IsTeamAward2, MaxStanding2, RewOnKillRepValue2, TeamDependent "
+    //    10            11            12               13              14              15
+        ",CurrencyId1,  CurrencyId2,  CurrencyId3,     CurrencyCount1, CurrencyCount2, CurrencyCount3 "
         "FROM creature_onkill_reputation");
 
     if (!result)
@@ -7225,6 +7227,12 @@ void ObjectMgr::LoadReputationOnKill()
         repOnKill.reputation_max_cap2  = fields[7].GetUInt32();
         repOnKill.repvalue2            = fields[8].GetInt32();
         repOnKill.team_dependent       = fields[9].GetUInt8();
+        repOnKill.currencyid1          = fields[10].GetUInt32();
+        repOnKill.currencyid2          = fields[11].GetUInt32();
+        repOnKill.currencyid3          = fields[12].GetUInt32();
+        repOnKill.currencycount1       = fields[13].GetInt32();
+        repOnKill.currencycount2       = fields[14].GetInt32();
+        repOnKill.currencycount3       = fields[15].GetInt32();
 
         if (!GetCreatureTemplate(creature_id))
         {
@@ -7237,8 +7245,8 @@ void ObjectMgr::LoadReputationOnKill()
             FactionEntry const *factionEntry1 = sFactionStore.LookupEntry(repOnKill.repfaction1);
             if (!factionEntry1)
             {
-                sLog->outErrorDb("Faction (faction.dbc) %u does not exist but is used in `creature_onkill_reputation`", repOnKill.repfaction1);
-                continue;
+                sLog->outErrorDb("Faction (faction.dbc) %u does not exist but is use in `creature_onkill_reputation`", repOnKill.repfaction1);
+               continue;
             }
         }
 
@@ -7248,6 +7256,33 @@ void ObjectMgr::LoadReputationOnKill()
             if (!factionEntry2)
             {
                 sLog->outErrorDb("Faction (faction.dbc) %u does not exist but is used in `creature_onkill_reputation`", repOnKill.repfaction2);
+                continue;
+            }
+        }
+
+        if (repOnKill.currencyid1)
+        {
+            if (!sCurrencyTypesStore.LookupEntry(repOnKill.currencyid1))
+            {
+                sLog->outErrorDb("CurrenctType (CurrenctTypes.dbc) %u does not exist but is used in `creature_onkill_reputation`", repOnKill.currencyid1);
+                continue;
+            }
+        }
+
+        if (repOnKill.currencyid2)
+        {
+            if (!sCurrencyTypesStore.LookupEntry(repOnKill.currencyid2))
+            {
+                sLog->outErrorDb("CurrenctType (CurrenctTypes.dbc) %u does not exist but is used in `creature_onkill_reputation`", repOnKill.currencyid2);
+                continue;
+            }
+        }
+
+        if (repOnKill.currencyid3)
+        {
+            if (!sCurrencyTypesStore.LookupEntry(repOnKill.currencyid3))
+            {
+                sLog->outErrorDb("CurrenctType (CurrenctTypes.dbc) %u does not exist but is used in `creature_onkill_reputation`", repOnKill.currencyid3);
                 continue;
             }
         }
