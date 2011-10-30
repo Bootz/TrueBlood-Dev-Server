@@ -1,5 +1,13 @@
 set(scripts_STAT_SRCS
   ${scripts_STAT_SRCS}
+  Cataclysme/Faction/boss_baine_sabot_de_sang.cpp
+  Cataclysme/Faction/boss_dame_sylvanas_coursevent.cpp
+  Cataclysme/Faction/boss_forgefer.cpp
+  Cataclysme/Faction/boss_garrosh_hurlenfer.cpp
+  Cataclysme/Faction/boss_silvermoon.cpp
+  Cataclysme/Faction/boss_prophete_velen.cpp
+  Cataclysme/Faction/boss_tyrande_murmevent.cpp
+  Cataclysme/Faction/boss_varian_wrynn.cpp
   Cataclysme/Zones/Gilneas/gilneas.cpp
   Cataclysme/Raids/BaradinHold/baradin_hold.h
   Cataclysme/Raids/BaradinHold/instance_baradin_hold.cpp
