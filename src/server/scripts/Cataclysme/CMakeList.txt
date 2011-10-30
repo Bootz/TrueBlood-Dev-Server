@@ -1,0 +1,28 @@
+set(scripts_STAT_SRCS
+  ${scripts_STAT_SRCS}
+  Cataclysme/Zones/Gilneas/gilneas.cpp
+  Cataclysme/Raids/BaradinHold/baradin_hold.h
+  Cataclysme/Raids/BaradinHold/instance_baradin_hold.cpp
+  Cataclysme/Raids/BaradinHold/boss_argaloth.cpp
+  Cataclysme/Donjons/TheStonecore/instance_the_stonecore.cpp
+  Cataclysme/Donjons/TheStonecore/the_stonecore.cpp
+  Cataclysme/Donjons/TheStonecore/the_stonecore.h
+  Cataclysme/Donjons/GrimBatol/grim_batol.h
+  Cataclysme/Donjons/GrimBatol/instance_grim_batol.cpp
+  Cataclysme/Donjons/ThroneOfTheTides/throne_of_the_tides.h
+  Cataclysme/Donjons/ThroneOfTheTides/instance_throne_of_the_tides.cpp
+  Cataclysme/Donjons/LostCityOfTheTolvir/instance_lost_city_of_the_tolvir.cpp
+  Cataclysme/Donjons/LostCityOfTheTolvir/lost_city_of_the_tolvir.cpp
+  Cataclysme/Donjons/LostCityOfTheTolvir/lost_city_of_the_tolvir.h
+  Cataclysme/Donjons/LostCityOfTheTolvir/boss_lockmaw.cpp
+  Cataclysme/Donjons/LostCityOfTheTolvir/boss_high_prophet_barim.cpp
+  Cataclysme/Donjons/HallsOfOrigination/instance_halls_of_origination.cpp
+  Cataclysme/Donjons/HallsOfOrigination/halls_of_origination.h
+  Cataclysme/Donjons/HallsOfOrigination/boss_temple_guardian_anhuur.cpp
+  Cataclysme/Donjons/HallsOfOrigination/boss_earthrager_ptah.cpp
+  Cataclysme/Donjons/HallsOfOrigination/boss_anraphet.cpp
+  Cataclysme/Donjons/TheVortexPinnacle/the_vortex_pinnacle.h
+  Cataclysme/Donjons/TheVortexPinnacle/instance_the_vortex_pinnacle.cpp
+)
+
+message("  -> Prepared: Cataclysme")
